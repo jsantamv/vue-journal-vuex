@@ -2,22 +2,33 @@
 <template>
   <div class="entry-list-container">
     <div class="px-2 pt-2">
-      <input type="text" class="form-control" placeholder="Buscar Entrada">
+      <input type="text" class="form-control" placeholder="Buscar Entrada" v-model="term">
     </div>
 
     <div class="entry-scrollarea">
-      <EntryItem v-for="item in 100" :key="item">Entry
-      </EntryItem>
+      <EntryItem v-for="item in getEntriesByTerm" :key="item" description="item" />
     </div>
   </div>
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
-    EntryItem: defineAsyncComponent(()=> import('./EntryItem.vue'))
+    EntryItem: defineAsyncComponent(() => import('./EntryItem.vue'))
+  },
+  computed: {
+    ...mapGetters('journal', ['getEntriesByTerm']),
+    getEntriesByTerm() {
+      return this.getEntriesByTerm(this.term)
+    }
+  },
+  data() {
+    return {
+      term: ''
+    }
   }
 
 }

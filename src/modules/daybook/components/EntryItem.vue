@@ -19,6 +19,11 @@
 
 <script>
 export default {
+    props: {
+        description: {
+            type: String
+        }
+    }
 
 }
 
