@@ -10,9 +10,7 @@
 
         <!-- Description -->
         <div class="entry-description">
-            <p> Labore laboris mollit mollit nulla ullamco elit excepteur esse anim enim quis id est dolore.</p>
-            <br>
-            <p> Labore laboris mollit mollit nulla ullamco elit excepteur esse anim enim quis id est dolore.</p>
+            {{ description }}
         </div>
     </div>
 </template>
