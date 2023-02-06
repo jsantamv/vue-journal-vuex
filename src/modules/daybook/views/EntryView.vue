@@ -20,9 +20,7 @@
     <hr>
 
     <div class="d-flex flex-column px-3 h75">
-        <textarea placeholder="What happens today?">
-
-        </textarea>
+        <textarea placeholder="What happens today?" :v-model="entry.text"></textarea>
 
     </div>
 
@@ -34,11 +32,39 @@
 
 <script>
 import { defineAsyncComponent } from 'vue';
+import { mapGetters } from 'vuex';
 
 export default {
+    props: {
+        id: {
+            type: String,
+            required: true
+        }
+    },
     components: {
         CustomFab: defineAsyncComponent(() => import('../components/CustomFab.vue'))
+    },
+    data() {
+        return {
+            entry: null
+        }
+    },
+    computed: {
+        ...mapGetters('journal', ['getEntryById'])
+    },
+    methods: {
+        loadEntry() {
+            const entry = this.getEntryById(this.id)
+            if (!entry) this.$router.push({ name: 'no-entry' })
+
+            this.entry = entry
+        }
+    },
+    created() {
+        //console.log(this.id)
+        this.loadEntry()
     }
+
 }
 </script>
 
@@ -59,9 +85,9 @@ textarea {
     }
 }
 
-img{
+img {
     width: 200px;
-    position:fixed;
+    position: fixed;
     bottom: 150px;
     right: 20px;
     box-shadow: 0px 5px 10px rgba($color: #000000, $alpha: 0.2);
