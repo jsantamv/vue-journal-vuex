@@ -1,7 +1,7 @@
 
 <template>
     <div class="entry-title d-flex justify-content-between p-2">
-        <div class="text-success fs-3 fw-bold"> 15 </div>
+        <div class="text-success fs-3 fw-bold"> {{ day }} </div>
         <div class="mx-1 fs-3 "> Julio </div>
         <div class="mx-2 fs-4 fw-light"> 2021, Jueves </div>
     </div>
@@ -20,8 +20,7 @@
     <hr>
 
     <div class="d-flex flex-column px-3 h75">
-        <textarea placeholder="What happens today?" :v-model="entry.text"></textarea>
-
+        <textarea v-model="entry.text" placeholder="¿Qué sucedió hoy?"></textarea>
     </div>
 
     <CustomFab />
@@ -33,6 +32,7 @@
 <script>
 import { defineAsyncComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import getDataMonthYear from '../helpers/getDataMonthYear'
 
 export default {
     props: {
@@ -50,7 +50,11 @@ export default {
         }
     },
     computed: {
-        ...mapGetters('journal', ['getEntryById'])
+        ...mapGetters('journal', ['getEntryById']),
+        day() {
+            const { day } = getDataMonthYear(this.entry.date)
+            return day
+        }
     },
     methods: {
         loadEntry() {
