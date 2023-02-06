@@ -24,5 +24,14 @@ button {
     position: fixed;
     right: 20px;
     width: 50px;
+
+    &:hover{
+        background: green
+    }
+
+    &:active {
+        box-shadow: 0px 0px 2px #c9c9c9 inset;
+        border: 2px solid red;
+    }
 }
 </style>
