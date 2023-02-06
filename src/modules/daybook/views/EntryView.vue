@@ -1,38 +1,40 @@
 
 <template>
-    <div class="entry-title d-flex justify-content-between p-2">
-        <div class="text-success fs-3 fw-bold"> {{ day }} </div>
-        <div class="mx-1 fs-3 "> Julio </div>
-        <div class="mx-2 fs-4 fw-light"> 2021, Jueves </div>
-    </div>
-    <div>
-        <button class="btn btn-danger mx-2">
-            borrar
-            <i class="fa fa-trash-alt"></i>
-        </button>
+    <template v-if="entry">
+        <div class="entry-title d-flex justify-content-between p-2">
+            <div class="text-success fs-3 fw-bold"> {{ day }} </div>
+            <div class="mx-1 fs-3 "> {{ month }} </div>
+            <div class="mx-2 fs-4 fw-light">{{ yearDay }}</div>
+        </div>
+        <div>
+            <button class="btn btn-danger mx-2">
+                borrar
+                <i class="fa fa-trash-alt"></i>
+            </button>
 
-        <button class="btn btn-primary">
-            Subir foto
-            <i class="fa fa-upload"></i>
-        </button>
-    </div>
+            <button class="btn btn-primary">
+                Subir foto
+                <i class="fa fa-upload"></i>
+            </button>
+        </div>
 
-    <hr>
+        <hr>
 
-    <div class="d-flex flex-column px-3 h75">
-        <textarea v-model="entry.text" placeholder="¿Qué sucedió hoy?"></textarea>
-    </div>
+        <div class="d-flex flex-column px-3 h75">
+            <textarea v-model="entry.text" placeholder="¿Qué sucedió hoy?"></textarea>
+        </div>
 
-    <CustomFab />
+        <CustomFab />
 
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Tmurakam_-_IMG_1878_%28by%29.jpg" alt="entry-picture"
-        class="img-thumbnail">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Tmurakam_-_IMG_1878_%28by%29.jpg"
+            alt="entry-picture" class="img-thumbnail">
+    </template>
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue';
 import { mapGetters } from 'vuex';
-import getDataMonthYear from '../helpers/getDataMonthYear'
+import getDayMonthYear from '../helpers/getDayMonthYear'
 
 export default {
     props: {
@@ -52,14 +54,22 @@ export default {
     computed: {
         ...mapGetters('journal', ['getEntryById']),
         day() {
-            const { day } = getDataMonthYear(this.entry.date)
+            const { day } = getDayMonthYear(this.entry.date)
             return day
+        },
+        month() {
+            const { month } = getDayMonthYear(this.entry.date)
+            return month
+        },
+        yearDay() {
+            const { yearDay } = getDayMonthYear(this.entry.date)
+            return yearDay
         }
     },
     methods: {
         loadEntry() {
             const entry = this.getEntryById(this.id)
-            if (!entry) this.$router.push({ name: 'no-entry' })
+            if (!entry) return this.$router.push({ name: 'no-entry' })
 
             this.entry = entry
         }
@@ -67,6 +77,12 @@ export default {
     created() {
         //console.log(this.id)
         this.loadEntry()
+    },
+    watch: {
+        //id(value, oldValue) {
+        id() {
+            this.loadEntry()
+        }
     }
 
 }
