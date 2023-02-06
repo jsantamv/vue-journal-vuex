@@ -2,20 +2,24 @@
 <template>
     <template v-if="entry">
         <div class="entry-title d-flex justify-content-between p-2">
-            <div class="text-success fs-3 fw-bold"> {{ day }} </div>
-            <div class="mx-1 fs-3 "> {{ month }} </div>
-            <div class="mx-2 fs-4 fw-light">{{ yearDay }}</div>
-        </div>
-        <div>
-            <button class="btn btn-danger mx-2">
-                borrar
-                <i class="fa fa-trash-alt"></i>
-            </button>
+            
+            <div>
+                <span class="text-success fs-3 fw-bold">{{ day }}</span>
+                <span class="mx-1 fs-3">{{ month }}</span>
+                <span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
+            </div>
 
-            <button class="btn btn-primary">
-                Subir foto
-                <i class="fa fa-upload"></i>
-            </button>
+            <div>
+                <button class="btn btn-danger mx-2">
+                    Borrar
+                    <i class="fa fa-trash-alt"></i>
+                </button>
+
+                <button class="btn btn-primary">
+                    Subir foto
+                    <i class="fa fa-upload"></i>
+                </button>
+            </div>
         </div>
 
         <hr>

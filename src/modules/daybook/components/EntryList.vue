@@ -42,7 +42,7 @@ export default {
 }
 
 .entry-scrollarea {
-  height: calc(100vh - 115px);
+  height: calc(100vh - 110px);
   overflow: scroll;
 }
 </style>
