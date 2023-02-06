@@ -6,7 +6,7 @@
     </div>
 
     <div class="entry-scrollarea">
-      <EntryItem v-for="item in entriesByTerm" :key="item" :description="item.text" />
+      <EntryItem v-for="entry in entriesByTerm" :key="entry.id" :entry="entry" />
     </div>
   </div>
 </template>

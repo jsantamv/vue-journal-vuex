@@ -1,9 +1,17 @@
 
-export const getEntriesByTerm = (state) => (term) => {
+/**
+ * dos funciones para poder
+ * recebir el termino de busqueda
+ * y poder tratarlo como JS.
+ ** @param {state} state 
+ *  @param {term} Term second function
+ * @returns 
+ */
+export const getEntriesByTerm = (state) => (term = '') => {
     if (term.length === 0) return state.entries
     return state.entries.filter(entry => entry.text.toLowerCase().includes(term.toLocaleLowerCase()))
 }
 
 export const getEntryById = (/*state*/) => {
-    
+
 }
