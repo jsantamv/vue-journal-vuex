@@ -41,6 +41,7 @@
 <script>
 import { defineAsyncComponent } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
+import Swal from 'sweetalert2'
 import getDayMonthYear from '../helpers/getDayMonthYear'
 
 export default {
@@ -74,7 +75,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('journal', ['updateEntries', 'createEntries','deleteEntry']),
+        ...mapActions('journal', ['updateEntries', 'createEntries', 'deleteEntry']),
         loadEntry() {
             let entry
 
@@ -91,20 +92,51 @@ export default {
             this.entry = entry
         },
         async saveEntry() {
+
+            new Swal({
+                title: 'Espere profavor',
+                allowOutsideClick: true
+            })
+
+            Swal.showLoading()
+
+
             if (this.entry.id)
                 //actualizar
                 await this.updateEntries(this.entry)
             else {
                 // crear una entrada
                 const id = await this.createEntries(this.entry)
-                
+
                 //realizamos una redireccion
                 this.$router.push({ name: 'entry', params: { id } })
             }
+
+            Swal.fire('Guardado con exito', 'Entrada guardada con exito', 'success')
         },
         async onDeleteEntry() {
-            await this.deleteEntry(this.entry.id)
-            return this.$router.push({ name: 'no-entry' })
+
+            const { isConfirmed } = await Swal.fire({
+                title: 'Seguro de borrar?',
+                text: 'Una vez eliminado no se puede recuperar',
+                showDenyButton: true,
+                confirmButtonText: 'Si, Estoy seguro'
+            })
+
+            if (isConfirmed) {
+                new Swal({
+                    title: 'Espere por favor ...',
+                    allowOutsideClick: false
+                })
+
+                Swal.showLoading()
+                await this.deleteEntry(this.entry.id)
+                this.$router.push({ name: 'no-entry' })
+
+                Swal.fire('Eliminado','','success')
+
+            }
+
         }
     },
     created() {
