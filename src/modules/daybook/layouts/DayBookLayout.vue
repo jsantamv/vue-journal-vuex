@@ -1,16 +1,17 @@
 
-import NavBar from '../components/NavBar.vue';
-
-
-import NavBar from '../components/NavBar.vue';
-
-
-import NavBar from '../components/NavBar.vue';
-
 <template>
     <NavBar />
 
-    <div class="d-flex">
+    <div v-if="isLoading" class="row justify-content-md-center">
+        <div class="col-3 alert-info text-center mt-5">
+            Espere pro favor...
+            <h3 class="mt-2">
+                <i class="fa fa-spin fa-sync"></i>
+            </h3>
+        </div>
+    </div>
+
+    <div v-else class="d-flex">
         <div class="col-4">
             <EntryList />
         </div>
@@ -23,12 +24,15 @@ import NavBar from '../components/NavBar.vue';
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     components: {
         NavBar: defineAsyncComponent(() => import('@/modules/daybook/components/NavBar.vue')),
         EntryList: defineAsyncComponent(() => import('@/modules/daybook/components/EntryList.vue'))
+    },
+    computed: {
+        ...mapState('journal', ['isLoading'])
     },
     methods: {
         ...mapActions('journal', ['loadEntries'])
