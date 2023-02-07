@@ -2,7 +2,7 @@
 <template>
     <template v-if="entry">
         <div class="entry-title d-flex justify-content-between p-2">
-            
+
             <div>
                 <span class="text-success fs-3 fw-bold">{{ day }}</span>
                 <span class="mx-1 fs-3">{{ month }}</span>
@@ -27,17 +27,20 @@
         <div class="d-flex flex-column px-3 h75">
             <textarea v-model="entry.text" placeholder="¿Qué sucedió hoy?"></textarea>
         </div>
-
-        <CustomFab />
-
         <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Tmurakam_-_IMG_1878_%28by%29.jpg"
             alt="entry-picture" class="img-thumbnail">
+
+        <CustomFab icon="fa-save" @on:click="saveEntry" />
+
     </template>
+
+
+
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import getDayMonthYear from '../helpers/getDayMonthYear'
 
 export default {
@@ -71,12 +74,17 @@ export default {
         }
     },
     methods: {
+        ...mapActions('journal',['updateEntries']),
         loadEntry() {
             const entry = this.getEntryById(this.id)
             if (!entry) return this.$router.push({ name: 'no-entry' })
 
             this.entry = entry
+        },
+        async saveEntry(){
+            this.updateEntries(this.entry)
         }
+
     },
     created() {
         //console.log(this.id)
@@ -102,9 +110,10 @@ textarea {
 
     &:foucus {
         outline: none;
+        background: gray;
     }
 
-    &:focus {
+    &:active {
         background: lightcyan;
     }
 }

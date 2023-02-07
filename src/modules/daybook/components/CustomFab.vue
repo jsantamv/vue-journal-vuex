@@ -1,5 +1,5 @@
 <template>
-    <button class="btn btn-primary">
+    <button class="btn btn-primary" @click="$emit('on:click')">
         <i class="fa fa-2x" :class="icon"></i>
     </button>
 </template>
@@ -25,7 +25,7 @@ button {
     right: 20px;
     width: 50px;
 
-    &:hover{
+    &:hover {
         background: green
     }
 
