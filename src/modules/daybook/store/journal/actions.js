@@ -21,14 +21,12 @@ export const updateEntries = async ({ commit }, entry) => { // entry debe de ser
 
     // extraer solo lo que necesitan // -id
     const { id, ...dataSave } = entry
-
     // await journalApi.put(path.json, dataToSave)
     await journalApi.put(`/entries/${id}.json`, dataSave)
 
     // Commint de una mutation => updateEntry, 
     // Spread del entry para pasarlo por valor
     commit('updateEntry', { ...entry })
-
     commit('setIsLoading', false)
 }
 
@@ -37,10 +35,9 @@ export const createEntries = async ({ commit }, entry) => {
 
     const { ...dataToSave } = entry
     const { data } = await journalApi.post('/entries.json', dataToSave)
-
     dataToSave.id = data.name
-    commit('addEntry', entry)
-    
+
+    commit('addEntry', dataToSave)
     commit('setIsLoading', false)
     return data.name
 }
