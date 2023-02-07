@@ -74,7 +74,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('journal', ['updateEntries']),
+        ...mapActions('journal', ['updateEntries', 'createEntries']),
         loadEntry() {
             let entry
 
@@ -94,12 +94,14 @@ export default {
             if (this.entry.id)
                 //actualizar
                 await this.updateEntries(this.entry)
-            else{
+            else {
                 // crear una entrada
-                console.log('post una nueva entrda')
+                const id = await this.createEntries(this.entry)
+                
+                //realizamos una redireccion
+                this.$router.push({ name: 'entry', params: { id } })
             }
         }
-
     },
     created() {
         this.loadEntry()

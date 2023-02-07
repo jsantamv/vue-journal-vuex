@@ -13,8 +13,18 @@ export const updateEntry = (state, entry) => {
     state.entries[idx] = entry
 }
 
-export const addEntry = (/*state*/) => {
+export const addEntry = (state, entry) => {
 
+    //agrego la nuevaentrada al inicio
+    state.entries=[entry, ...state.entries]
+
+    //estate => entries, que sea la primera
+
+    //sacar del usuario de la ruta /new
+
+    //await action
+
+    // redirect to => ruta con el id nuevo
 }
 
 export const setIsLoading = (state, val) => {
