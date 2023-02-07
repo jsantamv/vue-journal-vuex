@@ -14,19 +14,13 @@ export const updateEntry = (state, entry) => {
 }
 
 export const addEntry = (state, entry) => {
-
-    //agrego la nuevaentrada al inicio
-    state.entries=[entry, ...state.entries]
-
-    //estate => entries, que sea la primera
-
-    //sacar del usuario de la ruta /new
-
-    //await action
-
-    // redirect to => ruta con el id nuevo
+    state.entries = [entry, ...state.entries]
 }
 
 export const setIsLoading = (state, val) => {
     state.isLoading = val
+}
+
+export const deleteEntry = (state, id) => {
+    state.entries = state.entries.filter(entry => entry.id !== id)
 }
