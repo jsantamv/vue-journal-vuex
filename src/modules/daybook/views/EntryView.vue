@@ -74,20 +74,34 @@ export default {
         }
     },
     methods: {
-        ...mapActions('journal',['updateEntries']),
+        ...mapActions('journal', ['updateEntries']),
         loadEntry() {
-            const entry = this.getEntryById(this.id)
-            if (!entry) return this.$router.push({ name: 'no-entry' })
+            let entry
+
+            if (this.id === 'new') {
+                entry = {
+                    text: '',
+                    date: new Date().getTime()
+                }
+            } else {
+                entry = this.getEntryById(this.id)
+                if (!entry) return this.$router.push({ name: 'no-entry' })
+            }
 
             this.entry = entry
         },
-        async saveEntry(){
-            this.updateEntries(this.entry)
+        async saveEntry() {
+            if (this.entry.id)
+                //actualizar
+                await this.updateEntries(this.entry)
+            else{
+                // crear una entrada
+                console.log('post una nueva entrda')
+            }
         }
 
     },
     created() {
-        //console.log(this.id)
         this.loadEntry()
     },
     watch: {
