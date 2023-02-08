@@ -9,12 +9,8 @@
                 <span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
             </div>
 
-            <input type="file" 
-                @change="onSelectedImage" 
-                ref="imageSelector" 
-                v-show="false" 
-                accept="image/png image/jpeg"
-            >
+            <input type="file" @change="onSelectedImage" ref="imageSelector" v-show="false"
+                accept="image/png image/jpeg">
 
             <div>
                 <button v-if="entry.id" class="btn btn-danger mx-2" @click="onDeleteEntry">
@@ -36,20 +32,10 @@
         </div>
 
         <!-- este es para mostrar la imagen guarda -->
-        <img 
-            v-if="entry.picture"
-            :src="entry.picture"
-            alt="entry-picture" 
-            class="img-thumbnail"
-        >
+        <img v-if="entry.picture && !localImage" :src="entry.picture" alt="entry-picture" class="img-thumbnail">
 
         <!-- este es para mostrar la img que se esta cargando -->
-        <img 
-            v-if="localImage" 
-            :src="localImage" 
-            alt="entry-picture" 
-            class="img-thumbnail"
-        >
+        <img v-if="localImage" :src="localImage" alt="entry-picture" class="img-thumbnail">
 
         <CustomFab icon="fa-save" @on:click="saveEntry" />
 
@@ -139,7 +125,7 @@ export default {
                 //realizamos una redireccion
                 this.$router.push({ name: 'entry', params: { id } })
             }
-
+            this.file = null
             Swal.fire('Guardado con exito', 'Entrada guardada con exito', 'success')
         },
         async onDeleteEntry() {
