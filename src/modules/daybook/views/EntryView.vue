@@ -9,6 +9,8 @@
                 <span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
             </div>
 
+            <input type="file" @change="onSelectedImage">
+
             <div>
                 <button v-if="entry.id" class="btn btn-danger mx-2" @click="onDeleteEntry">
                     Borrar
@@ -133,10 +135,17 @@ export default {
                 await this.deleteEntry(this.entry.id)
                 this.$router.push({ name: 'no-entry' })
 
-                Swal.fire('Eliminado','','success')
+                Swal.fire('Eliminado', '', 'success')
 
             }
+        },
+        onSelectedImage(event) {
+            const file = event.target.files[0]
+            if (!file) {
+                return
+            }else{
 
+            }
         }
     },
     created() {
