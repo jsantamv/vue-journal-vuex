@@ -9,7 +9,12 @@
                 <span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
             </div>
 
-            <input type="file" @change="onSelectedImage">
+            <input type="file" 
+                @change="onSelectedImage" 
+                ref="imageSelector" 
+                v-show="false" 
+                accept="image/png image/jpeg"
+            >
 
             <div>
                 <button v-if="entry.id" class="btn btn-danger mx-2" @click="onDeleteEntry">
@@ -17,7 +22,7 @@
                     <i class="fa fa-trash-alt"></i>
                 </button>
 
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" @click="onSelectImage">
                     Subir foto
                     <i class="fa fa-upload"></i>
                 </button>
@@ -29,8 +34,22 @@
         <div class="d-flex flex-column px-3 h75">
             <textarea v-model="entry.text" placeholder="¿Qué sucedió hoy?"></textarea>
         </div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Tmurakam_-_IMG_1878_%28by%29.jpg"
-            alt="entry-picture" class="img-thumbnail">
+
+        <!-- este es para mostrar la imagen guarda -->
+        <img 
+            v-if="entry.picture"
+            :src="entry.picture"
+            alt="entry-picture" 
+            class="img-thumbnail"
+        >
+
+        <!-- este es para mostrar la img que se esta cargando -->
+        <img 
+            v-if="localImage" 
+            :src="localImage" 
+            alt="entry-picture" 
+            class="img-thumbnail"
+        >
 
         <CustomFab icon="fa-save" @on:click="saveEntry" />
 
@@ -45,6 +64,8 @@ import { defineAsyncComponent } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import Swal from 'sweetalert2'
 import getDayMonthYear from '../helpers/getDayMonthYear'
+import upLoadImage from "@/modules/daybook/helpers/uploadImage"
+
 
 export default {
     props: {
@@ -58,7 +79,9 @@ export default {
     },
     data() {
         return {
-            entry: null
+            entry: null,
+            localImage: null,
+            file: null
         }
     },
     computed: {
@@ -96,12 +119,15 @@ export default {
         async saveEntry() {
 
             new Swal({
-                title: 'Espere profavor',
+                title: 'Espere porfavor',
                 allowOutsideClick: true
             })
 
             Swal.showLoading()
 
+            //aca salvamos la imagen y la establecemos en el picture
+            const picture = await upLoadImage(this.file)
+            this.entry.picture = picture
 
             if (this.entry.id)
                 //actualizar
@@ -142,10 +168,20 @@ export default {
         onSelectedImage(event) {
             const file = event.target.files[0]
             if (!file) {
+                this.localImage = null
+                this.file = null
                 return
-            }else{
-                return null
             }
+
+            this.file = file
+
+            const fr = new FileReader()
+            fr.onload = () => this.localImage = fr.result
+            fr.readAsDataURL(file)
+        },
+        onSelectImage() {
+            // console.log(this.$refs)
+            this.$refs.imageSelector.click()
         }
     },
     created() {
