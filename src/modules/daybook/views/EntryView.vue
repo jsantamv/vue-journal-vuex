@@ -144,7 +144,7 @@ export default {
             if (!file) {
                 return
             }else{
-
+                return null
             }
         }
     },
